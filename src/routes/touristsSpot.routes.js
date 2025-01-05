@@ -8,5 +8,7 @@ router.route("/countries").get(TouristSpotController.getAllCountries);
 router.route("/spots").get(TouristSpotController.getAllTouristsSpots);
 router.route("/spot/:id").get(TouristSpotController.getTouristSpot);
 router.route("/add-spot").post(TouristSpotController.addATouristSpot);
+router.route("/my-spots/:user_email").get(TouristSpotController.getAllMySpots);
+router.route("/update-spot/:id").patch(TouristSpotController.updateASpot);
 
 export default router;

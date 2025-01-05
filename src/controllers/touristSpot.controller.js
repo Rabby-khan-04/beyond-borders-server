@@ -88,12 +88,55 @@ const addATouristSpot = asyncHandler(async (req, res) => {
     );
 });
 
+const getAllMySpots = asyncHandler(async (req, res) => {
+  const { user_email } = req.params;
+  const query = { user_email };
+
+  const cursor = TouristsSpots.find(query);
+  const spots = await cursor.toArray();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, spots, "My spot list fetched successfully"));
+});
+
+const updateASpot = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const updatedSpotData = req.body;
+  const query = { _id: new ObjectId(id) };
+  const updatedDoc = {
+    $set: {
+      image: updatedSpotData.image,
+      tourists_spot_name: updatedSpotData.tourists_spot_name,
+      country_name: updatedSpotData.country_name,
+      location: updatedSpotData.location,
+      short_description: updatedSpotData.short_description,
+      average_cost: parseInt(updatedSpotData.average_cost),
+      seasonality: updatedSpotData.seasonality,
+      travel_time: updatedSpotData.travel_time,
+      totalVisitorsPerYear: parseInt(updatedSpotData.totalVisitorsPerYear),
+      user_email: updatedSpotData.user_email,
+      user_name: updatedSpotData.user_name,
+    },
+  };
+
+  const option = { upsert: true, new: true };
+
+  const result = await TouristsSpots.updateOne(query, updatedDoc, option);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, result, "Tourist spot updated successfully!!!"));
+});
+
 const TouristSpotController = {
   getAllSlider,
   getAllCountries,
   getAllTouristsSpots,
   getTouristSpot,
   addATouristSpot,
+  getAllMySpots,
+  updateASpot,
 };
 
 export default TouristSpotController;
