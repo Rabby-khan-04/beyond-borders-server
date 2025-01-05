@@ -129,6 +129,19 @@ const updateASpot = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, result, "Tourist spot updated successfully!!!"));
 });
 
+const deleteAToursitSpot = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const query = { _id: new ObjectId(id) };
+
+  const result = await TouristsSpots.deleteOne(query);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, result, "Toursists spot deleted successfully!!!")
+    );
+});
+
 const TouristSpotController = {
   getAllSlider,
   getAllCountries,
@@ -137,6 +150,7 @@ const TouristSpotController = {
   addATouristSpot,
   getAllMySpots,
   updateASpot,
+  deleteAToursitSpot,
 };
 
 export default TouristSpotController;
